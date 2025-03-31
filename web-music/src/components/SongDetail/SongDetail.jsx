@@ -20,7 +20,7 @@ const SongDetail = () => {
     { name: "Hello Việt Nam", singer: "Bống" }, 
   ];
   useEffect(()=>{
-    fetch(`http://127.0.0.1:8000/api/youtube-songs/${video_id}/`)
+    fetch(`http://127.0.0.1:8000/api/songs/${video_id}/`)
     .then((res)=>res.json())
     .then((data)=>{
       console.log("Dữ liệu bài hát:", data);
@@ -38,22 +38,32 @@ const SongDetail = () => {
             <h2>{songsData.title}</h2>
             <h4>{songsData.artist}</h4>
           </div>
-          <div className="duration">
+          {/* <div className="duration">
             <p>1:06</p>
             <div>
               <hr />
             </div>
             <p>3:58</p>
-          </div>
-          <div className='song-detail-controls'>
+          </div> */}
+          {songsData.play_url ? (
+            <div className="audio-player"    >
+              <audio controls autoPlay>
+                <source src={songsData.play_url} type="audio/mp3" />
+                Trình duyệt của bạn không hỗ trợ phát nhạc.
+              </audio>
+            </div>
+          ):(
+            <p>Không tìm thấy file nhạc.</p>
+          )}
+
+          {/* <div className='song-detail-controls'>
             <img src={assets.shuffle_icon} alt="" />
             <img src={assets.prev_icon} alt="" />
             <img src={assets.play_icon} alt="" />
             <img src={assets.next_icon} alt="" />
             <img src={assets.loop_icon} alt="" />
-          </div>
+          </div> */}
         </div>
-        <h3>NGHE TIẾP</h3>
       </div>
       <div className="rank-list">
         <h2>🔥 BXH Bài Hát</h2>
@@ -79,38 +89,56 @@ const SongDetail = () => {
       </div>
       <div className="lyrics">
         <div className="title">
-          <h2>Lời bài hát: Lỡ hẹn với dòng sông Lam</h2>
-          <p>Lời đăng bởi: <span className="author">nhnhi</span></p>
+          <h2>Lời bài hát: {songsData.title}</h2>
+          <p>Lời đăng bởi: <span className="author">{songsData.artist}</span></p>
         </div>
         <hr />
         <div className="lyrics-detail">
-          <p>Mây chiều bản làng soi bóng nước<br />
-            Một chiếc thuyền nan vội vã trở về<br />
-            Sông Lam một dải xanh như ngọc<br />
-            Vời vợi mắt ai buồn tái tê
-          </p>
+          <p>
+            Yéh yeh
+            Òh nhạc này tẩm đá
+            Hơ hỡ
+            (M I K E)
+            Tự hào vì những vấp ngã sóng gió thân trai đời này đi qua
+            Vẻ đẹp từ những vết xước lớn bé tràn đầy nghệ thuật trên da
+            Vùng dậy trở thành người có tiếng nói thay vì một mình rên la
+            Trân trọng cảm ơn tất cả anh em không ngại cùng mình xông pha
+            Nà á a a à một từ đãa a à
+            Tự do làm điều mình muốn xõa à a á
+            Rapper thích ka la là la lá
+            Không thích thì xích qua và những lời dối trá
 
-          <p>Xa xa mây phủ non Hồng Lĩnh<br />
-            Đá vàng hoa cài nở bến sông<br />
-            Câu hát giận thương vương sóng nước<br />
-            Đò đầy đò phải sang sông
-          </p>
+            Tao đã quen dần vì đã có những lần
+            Tay trắng chân trần bụi đường trời đã cho
+            Họ gọi tụi tao "dân bần" (rất là bần)
+            Đời người là lắng lo tự thân rạch thân phân trần
+            Những lần mình đắn đo là vòng quay Trái Đất cân bằng (rất công bằng)
+            Ú quơ o òh
 
-          <p>Đến duyên em đi lấy chồng<br />
-            Đôi mắt người thương nghiêng vành nón<br />
-            Giận hờn chi rứa bến sông buồn<br />
-            Anh nỏ ngỏ lời em chờ đợi sớm hôm
-          </p>
+            Làm nhạc là tự do không kịch bản
+            Đem lời cần than vãn lên giấy mà viết không được nản
+            Đôi khi có vài thằng thích chọc điên tiết mình, đ*o hảo hán
+            Như thằng cuồng *** đè beat ra mà hiếp, tòa tuyên án
+            Cho bị cáo Mike chung thân cả đời với âm nhạc
 
-          <p>Vì hoa đến thì thì hoa phải nở<br />
-            Em xuống bến đò em về bên nớ<br />
-            Nước mắt nhạt nhòa theo mái chèo buông<br />
-            Từ độ chia tay anh phiêu bạt muôn phương
-          </p>
-          <p>Nay trở về quê đò gác bến rồi<br />
-            Nghe câu vĩ dặm người ơi <br />
-            Sương chiều ướt lạnh dòng trôi <br />
-            Sông Lam xanh biếc đôi bờ
+            Chúng mày sỉ nhục tao trên mạng rồi tao phải câm à?
+            Hay phải cười thân thiện rồi một dạ hai vâng á?
+            Tao thích làm đ*o gì tao làm
+            Chúng nó muốn thấy tao với hai hàng lệ
+            Tao thích làm đ*o gì tao làm
+            Chúng nó muốn thấy ao@#$%^&*
+            (Shout out 2 anh nam cocáin)
+
+            Tự hào vì những vấp ngã sóng gió thân trai đời này đi qua
+            Vẻ đẹp từ những vết xước lớn bé tràn đầy nghệ thuật trên da
+            Vùng dậy trở thành người có tiếng nói thay vì một mình rên la
+            Trân trọng cảm ơn tất cả anh em không ngại cùng mình xông pha
+            Nà á a a à một từ đãa a à
+            Tự do làm điều mình muốn xõa à a á
+            Rapper thích ka la là la lá
+            Không thích thì xích qua và những lời dối trá
+            Tao đã quen dần
+            M I K E
           </p>
         </div>
 

@@ -59,7 +59,7 @@ class DownloadYouTubeToLocal(APIView):
 
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),
+            'outtmpl': os.path.join(download_path, '%(id)s.%(ext)s'),  # Lưu file với video_id.mp3
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
@@ -76,7 +76,7 @@ class DownloadYouTubeToLocal(APIView):
                         continue
                     info = ydl.extract_info(youtube_url, download=True)
                     video_id = info.get("id")
-                    file_path = os.path.join(download_path, f"{info.get('title')}.mp3")
+                    file_path = os.path.join(download_path, f"{info.get('video_id')}.mp3")
 
                     # Lưu thông tin bài hát vào cơ sở dữ liệu
                     song_obj, created = Song.objects.get_or_create(
@@ -117,7 +117,7 @@ class GetAllSongs(APIView):
                 "video_id": song.video_id,
                 "youtube_url": song.youtube_url,
                 "detail_url": request.build_absolute_uri(f"/api/songs/{song.video_id}/"),  # Thêm trường detail_url
-                "play_url": request.build_absolute_uri(f"/media/{os.path.basename(song.file_path)}")  # URL phát nhạc
+                "play_url": request.build_absolute_uri(f"/media/{song.video_id}.mp3")  # Phát nhạc bằng video_id.mp3
 
             }
             for song in songs
@@ -135,7 +135,7 @@ class GetSongByVideoID(APIView):
                 "thumbnail": song.thumbnail,
                 "video_id": song.video_id,
                 "youtube_url": song.youtube_url,
-                "play_url": request.build_absolute_uri(f"/media/{os.path.basename(song.file_path)}")  # URL phát nhạc
+                "play_url": request.build_absolute_uri(f"/media/{video_id}.mp3")  # Phát nhạc bằng video_id.mp3
 
             }, status=status.HTTP_200_OK)
         except Song.DoesNotExist:

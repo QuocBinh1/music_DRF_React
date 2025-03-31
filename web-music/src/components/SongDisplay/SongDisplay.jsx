@@ -9,11 +9,16 @@ const SongDisplay = () => {
   const [songsData, setSongsData] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/youtube-songs/")
+    fetch("http://127.0.0.1:8000/api/songs/")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Dữ liệu nhận được:", data); // Debug
-        setSongsData(data); // Sửa lỗi ở đây
+        if (Array.isArray(data)) {
+          setSongsData(data); // Nếu API trả về mảng
+        } else if (data && Array.isArray(data.data)) {
+          setSongsData(data.data); // Nếu API trả về object chứa `data`
+        } else {
+          console.error("Dữ liệu API không hợp lệ:", data);
+        }
       })
       .catch((err) => console.error("Lỗi khi lấy dữ liệu bài hát", err));
   }, []);
@@ -26,7 +31,12 @@ const SongDisplay = () => {
       
       {songsData.map((song, index) => (
         <Link to={`/song/${song.video_id}`} key={index}>
-          <SongItem key={index} video_id={song.video_id} name={song.title} desc={song.artist} image={song.thumbnail} />
+          <SongItem key={index} 
+            video_id={song.video_id} 
+            name={song.title} 
+            desc={song.artist} 
+            image={song.thumbnail} 
+          />
         </Link>
       ))}
       </div>
