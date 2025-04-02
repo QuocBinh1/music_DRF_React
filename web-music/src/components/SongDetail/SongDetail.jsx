@@ -20,7 +20,7 @@ const SongDetail = () => {
     { name: "Hello Việt Nam", singer: "Bống" }, 
   ];
   useEffect(()=>{
-    fetch(`http://127.0.0.1:8000/api/songs/${video_id}/`)
+    fetch(`https://music-backend-k82o.onrender.com/api/songs/${video_id}/`)
     .then((res)=>res.json())
     .then((data)=>{
       console.log("Dữ liệu bài hát:", data);
