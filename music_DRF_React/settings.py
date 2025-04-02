@@ -24,19 +24,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$=1!_p6ymufin2g6+$dnfa(qa_=&ei%zpgv&^!k7p44%f3xz3o'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['music-backend-k82o.onrender.com', 'localhost', '127.0.0.1']
+
+ALLOWED_HOSTS = [
+    'music-backend-k82o.onrender.com',
+    '.onrender.com',  # Cho phép mọi service trên Render
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
 ROOT_URLCONF = 'music_DRF_React.urls'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
+
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M")
 
 CORS_ALLOWED_ORIGINS = ["https://music-one-drab.vercel.app", "http://localhost:3000"]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Địa chỉ frontend React
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -60,10 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOW_ALL_ORIGINS = True  # Cho phép tất cả các domain truy cập API (tạm thời)
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Địa chỉ frontend React
-]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -156,6 +163,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
