@@ -35,6 +35,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M")
 
+CORS_ALLOWED_ORIGINS = ["https://music-one-drab.vercel.app", "http://localhost:3000"]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
