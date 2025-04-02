@@ -5,3 +5,4 @@ django-cors-headers==4.3.1
 psycopg2-binary==2.9.9  # Để kết nối PostgreSQL
 dj-database-url==2.1.0  # Để phân tích DATABASE_URL
 requests==2.31.0
+yt-dlp==2023.11.16  # Phiên bản ổn định mới nhất
