@@ -6,8 +6,38 @@ import os
 import sys
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'music', # ten db
+#         'USER': 'postgres',
+#         'PASSWORD': 'Anhbinhpzo11',
+#         'HOST': 'localhost',   # Thay đổi nếu cần thiết
+#         'PORT': '5432',        # Thay đổi nếu cần thiết
+#     }
+# }
 BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+
+
+
+
+
+
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 
 
@@ -97,23 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'music', # ten db
-        'USER': 'postgres',
-        'PASSWORD': 'Anhbinhpzo11',
-        'HOST': 'localhost',   # Thay đổi nếu cần thiết
-        'PORT': '5432',        # Thay đổi nếu cần thiết
-    }
-}
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 # Ghi đè cấu hình nếu có DATABASE_URL từ Render (production)
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:

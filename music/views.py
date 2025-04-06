@@ -76,7 +76,7 @@ class DownloadYouTubeToLocal(APIView):
                         continue
                     info = ydl.extract_info(youtube_url, download=True)
                     video_id = info.get("id")
-                    file_path = os.path.join(download_path, f"{info.get('video_id')}.mp3")
+                    file_path = os.path.join(download_path, f"{video_id}.mp3")
 
                     # Lưu thông tin bài hát vào cơ sở dữ liệu
                     song_obj, created = Song.objects.get_or_create(
