@@ -20,7 +20,8 @@ const SongDetail = () => {
     { name: "Hello Việt Nam", singer: "Bống" }, 
   ];
   useEffect(()=>{
-    fetch(`https://music-backend-k82o.onrender.com/api/songs/${video_id}/`)
+   //fetch(`https://music-backend-k82o.onrender.com/api/songs/${video_id}/`)
+    fetch(`http://127.0.0.1:8000/api/songs/${video_id}/`)
     .then((res)=>res.json())
     .then((data)=>{
       console.log("Dữ liệu bài hát:", data);
@@ -38,13 +39,6 @@ const SongDetail = () => {
             <h2>{songsData.title}</h2>
             <h4>{songsData.artist}</h4>
           </div>
-          {/* <div className="duration">
-            <p>1:06</p>
-            <div>
-              <hr />
-            </div>
-            <p>3:58</p>
-          </div> */}
           {songsData.play_url ? (
             <div className="audio-player"    >
               <audio controls autoPlay>
