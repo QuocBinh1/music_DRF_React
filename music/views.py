@@ -3,6 +3,8 @@ import requests , os
 from rest_framework.response import Response 
 from rest_framework import  status
 from rest_framework.views import APIView
+
+from music_DRF_React import settings
 from .models import Song
 from yt_dlp import YoutubeDL
 
@@ -13,6 +15,7 @@ YOUTUBE_API_KEY = "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M"
 danh_sach_ten_bai_hat = "mikelodic" 
 so_luong_bai_hat = 20
 
+    
 class SearchYouTubeView(APIView):
     """Tìm kiếm bài hát trên YouTube và trả về danh sách video liên quan."""
     
@@ -54,7 +57,7 @@ class DownloadYouTubeToLocal(APIView):
         if not songs:
             return Response({"error": "Danh sách bài hát không được cung cấp"}, status=status.HTTP_400_BAD_REQUEST)
 
-        download_path = os.path.join(os.getcwd(), "downloads")
+        download_path =settings.MEDIA_ROOT
         os.makedirs(download_path, exist_ok=True)  # Tạo thư mục nếu chưa tồn tại
 
         ydl_opts = {

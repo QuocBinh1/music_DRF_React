@@ -4,12 +4,24 @@ import dj_database_url
 from pathlib import Path
 import os
 import sys
+import dj_database_url
 
 
 
 
 # DEBUG = True
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,  # Kết nối tối đa 10 phút
+    )
+}
+
+
 
 # DATABASES = {
 #     'default': {
@@ -21,17 +33,6 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 #         'PORT': '5432',        # Thay đổi nếu cần thiết
 #     }
 # }
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
-
-
 
 
 
@@ -123,18 +124,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'music_DRF_React.wsgi.application'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# ✅ Dùng thư mục tạm thời phù hợp với Render
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
+MEDIA_ROOT = '/tmp'
 
-# Ghi đè cấu hình nếu có DATABASE_URL từ Render (production)
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-    
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -152,8 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -164,13 +157,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
