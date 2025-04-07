@@ -64,7 +64,8 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8w
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://music-one-drab.vercel.app",
+    
+    "https://nhacnhac-drab.vercel.app",
     "http://localhost:5173",  # Địa chỉ frontend React
 ]
 
