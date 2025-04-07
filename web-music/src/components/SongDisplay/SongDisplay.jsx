@@ -9,8 +9,8 @@ const SongDisplay = () => {
   const [songsData, setSongsData] = useState([]);
 
   useEffect(() => {
-    // fetch("https://music-backend-k82o.onrender.com/api/songs/")
-    fetch("http://127.0.0.1:8000/api/songs/")
+    fetch("https://music-backend-k82o.onrender.com/api/songs/")
+    //fetch("http://127.0.0.1:8000/api/songs/")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
