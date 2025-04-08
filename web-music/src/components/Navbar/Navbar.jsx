@@ -7,7 +7,8 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <img src={assets.spotify_logo} alt="" className="spotify_logo" />
+      <a href="http://localhost:5173/"> <img src={assets.spotify_logo} alt="" className="spotify_logo"  /></a>
+     
       <ul className='navbar-menu'>
         <li onClick={() => setMenu("discover")} className={menu === "discover" ? "active" : ""}>Khám phá</li>
         <li onClick={() => setMenu("song")} className={menu === "song" ? "active" : ""}>Bài hát</li>
