@@ -10,8 +10,9 @@ const SongDisplay = () => {
 
   useEffect(() => {
    // fetch("https://music-backend-k82o.onrender.com/api/songs/")
-    fetch("http://127.0.0.1:8000/api/search/?v=mikelodick")
-      .then((res) => res.json())
+    //fetch("http://127.0.0.1:8000/api/search/?v=mikelodick")
+    fetch("https://music-backend-k82o.onrender.com/api/search/?q=mikelodick")  
+    .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setSongsData(data); // Nếu API trả về mảng
