@@ -13,7 +13,7 @@ MEDIA_SONGS_PATH = "downloads"
 YOUTUBE_API_KEY = "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M"
 
 danh_sach_ten_bai_hat = "mikelodic" 
-so_luong_bai_hat = 20
+so_luong_bai_hat = 50
 
     
 class SearchYouTubeView(APIView):

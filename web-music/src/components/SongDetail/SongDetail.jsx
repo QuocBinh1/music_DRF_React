@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './SongDetail.css'
 import { data, useParams } from 'react-router-dom'
-import StreamAudioPlayer from '../../components/StreamAudioPlayer'; // đường dẫn tùy theo cấu trúc của bạn
+import StreamAudioPlayer from '../StreamAudioPlayer/StreamAudioPlayer'; // đường dẫn tùy theo cấu trúc của bạn
 
 import { assets, songsData } from '../../assets/assets';
 const SongDetail = () => {

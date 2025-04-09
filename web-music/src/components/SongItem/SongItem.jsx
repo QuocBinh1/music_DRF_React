@@ -27,8 +27,8 @@ const SongItem = ({ video_id, name, desc, image }) => {
         <div className="song-item-name-rating">
           <p className="song-title">{name}</p>
           <div className="icons">
-            <img className="love" src={assets.like_icon} alt="Like" />
-            <img className="stars" src={assets.rating_stars} alt="Rating" />
+            {/* <img className="love" src={assets.like_icon} alt="Like" /> */}
+            {/* <img className="stars" src={assets.rating_stars} alt="Rating" /> */}
           </div>
         </div>
         <p className="song-item-desc">{desc}</p>
