@@ -4,43 +4,51 @@ import './SongDisplay.css'
 import { StoreContext } from '../../context/StoreContext'
 import SongItem from '../SongItem/SongItem'
 import { Link } from "react-router-dom";
+import SearchBar from '../SearchBar/SearchBar';
 
 const SongDisplay = () => {
   const [songsData, setSongsData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('mikelodick');
 
-  useEffect(() => {
-   // fetch("https://music-backend-k82o.onrender.com/api/songs/")
-    //fetch("http://127.0.0.1:8000/api/search/?v=mikelodick")
-    fetch("https://music-backend-k82o.onrender.com/api/search/?q=mikelodick")  
-    .then((res) => res.json())
+  const fetchSongs = (query) => {
+    fetch(`http://127.0.0.1:8000/api/search/?q=${query}`)
+      .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setSongsData(data); // Nếu API trả về mảng
+          setSongsData(data);
         } else if (data && Array.isArray(data.data)) {
-          setSongsData(data.data); // Nếu API trả về object chứa `data`
+          setSongsData(data.data);
         } else {
           console.error("Dữ liệu API không hợp lệ:", data);
         }
       })
       .catch((err) => console.error("Lỗi khi lấy dữ liệu bài hát", err));
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchSongs(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
-    
     <div className='song-display' id='song-display'>
+       <SearchBar onSearch={handleSearch} />
       <h2>Danh sách bài hát</h2>
+
       <div className="song-display-list">
-      
-      {songsData.map((song, index) => (
-        <Link to={`/song/${song.video_id}`} key={index}>
-          <SongItem key={index} 
-            video_id={song.video_id} 
-            name={song.title} 
-            desc={song.artist} 
-            image={song.thumbnail} 
-          />
-        </Link>
-      ))}
+        {songsData.map((song, index) => (
+          <Link to={`/song/${song.video_id}`} key={index}>
+            <SongItem key={index} 
+              video_id={song.video_id} 
+              name={song.title} 
+              desc={song.artist} 
+              image={song.thumbnail} 
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );

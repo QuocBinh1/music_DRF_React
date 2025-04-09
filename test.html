@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Custom Audio Player</title>
+  <style>
+    .custom-audio-player {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+    
+    .song-info {
+      margin-bottom: 10px;
+    }
+    
+    .song-title {
+      font-weight: bold;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .controls {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .play-pause-btn {
+      background: #1db954;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+    
+    .progress-container {
+      flex-grow: 1;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background: #ddd;
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .progress {
+      height: 100%;
+      background: #1db954;
+      border-radius: 3px;
+      width: 0%;
+    }
+    
+    .time-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    /* Ẩn hoàn toàn video */
+    #youtube-player {
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      left: -1000px;
+      top: -1000px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Div ẩn chứa YouTube player -->
+  <div id="youtube-player"></div>
+  
+  <!-- Trình phát âm thanh tùy chỉnh -->
+  <div class="custom-audio-player">
+    <div class="song-info">
+        <img class="song-thumbnail" src="" alt="Thumbnail" style="width: 100%; border-radius: 4px; margin-bottom: 8px;" />
+        <div class="song-title">Đang tải bài hát...</div>
+        <div class="song-artist" style="font-size: 13px; color: #888;">Nghệ sĩ</div>
+    </div>
+    
+    <div class="controls">
+      <button class="play-pause-btn" id="playPauseBtn">▶</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress" id="progress"></div>
+        </div>
+        <div class="time-info">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Biến toàn cục
+    let player;
+    let isPlaying = false;
+    let progressInterval;
+    
+    // Tải YouTube API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+    // Khởi tạo YouTube Player khi API đã tải
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('youtube-player', {
+        height: '100',
+        width: '180',
+        videoId: 'spNpLl9NslA', // Thay bằng ID video của bạn
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'disablekb': 1,
+          'fs': 0,
+          'modestbranding': 1,
+          'rel': 0
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+    
+    // Xử lý khi player sẵn sàng
+    function onPlayerReady(event) {
+      updateSongInfo();
+      
+      // Thiết lập sự kiện click cho nút play/pause
+      document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+      
+      // Thiết lập sự kiện click cho thanh tiến trình
+      document.getElementById('progressBar').addEventListener('click', function(e) {
+        const progressBar = document.getElementById('progressBar');
+        const position = e.pageX - progressBar.getBoundingClientRect().left;
+        const totalWidth = progressBar.offsetWidth;
+        const percentage = position / totalWidth;
+        
+        // Nhảy đến vị trí trong video
+        const duration = player.getDuration();
+        player.seekTo(duration * percentage, true);
+      });
+    }
+    
+    // Xử lý khi trạng thái player thay đổi
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING) {
+        isPlaying = true;
+        document.getElementById('playPauseBtn').innerHTML = '&#10074;&#10074;'; // Biểu tượng pause
+        startProgressUpdate();
+      } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+        isPlaying = false;
+        document.getElementById('playPauseBtn').innerHTML = '&#9658;'; // Biểu tượng play
+        stopProgressUpdate();
+        
+        if (event.data == YT.PlayerState.ENDED) {
+          document.getElementById('progress').style.width = '0%';
+          document.getElementById('currentTime').textContent = formatTime(0);
+        }
+      }
+    }
+    
+    // Bật/tắt phát nhạc
+    function togglePlayPause() {
+      if (isPlaying) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    }
+    
+    // Cập nhật thông tin bài hát
+    function updateSongInfo() {
+      // Lấy tiêu đề video từ API
+      const videoId = player.getVideoData().video_id;
+      const apiKey = 'AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M'; // Thêm API key của bạn
+      
+      fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`)
+      .then(response => response.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            const snippet = data.items[0].snippet;
+            const title = data.items[0].snippet.title;
+            const artist = snippet.channelTitle;
+            const thumbnail = snippet.thumbnails.medium.url;
+            document.querySelector('.song-title').textContent = title;
+              // Gán thêm tên nghệ sĩ
+            document.querySelector('.song-artist').textContent = artist;
+
+            // Gán ảnh thumbnail
+            document.querySelector('.song-thumbnail').src = thumbnail;
+            document.querySelector('.song-thumbnail').alt = title;
+          }
+        })
+        .catch(error => {
+          console.error('Lỗi khi lấy thông tin bài hát:', error);
+          document.querySelector('.song-title').textContent = 'Không thể lấy thông tin bài hát';
+        });
+        
+      // Hoặc có thể sử dụng dữ liệu từ player
+      // document.querySelector('.song-title').textContent = player.getVideoData().title;
+      
+      // Cập nhật tổng thời gian
+      setTimeout(() => {
+        document.getElementById('duration').textContent = formatTime(player.getDuration());
+      }, 1000); // Chờ 1 giây để chắc chắn dữ liệu đã được tải
+    }
+    
+    // Bắt đầu cập nhật thanh tiến trình
+    function startProgressUpdate() {
+      stopProgressUpdate(); // Dừng interval hiện tại nếu có
+      
+      progressInterval = setInterval(() => {
+        if (player && player.getCurrentTime && player.getDuration) {
+          const currentTime = player.getCurrentTime();
+          const duration = player.getDuration();
+          const percentage = (currentTime / duration) * 100;
+          
+          document.getElementById('progress').style.width = percentage + '%';
+          document.getElementById('currentTime').textContent = formatTime(currentTime);
+        }
+      }, 1000);
+    }
+    
+    // Dừng cập nhật thanh tiến trình
+    function stopProgressUpdate() {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+      }
+    }
+    
+    // Định dạng thời gian từ giây sang mm:ss
+    function formatTime(timeInSeconds) {
+      const minutes = Math.floor(timeInSeconds / 60);
+      const seconds = Math.floor(timeInSeconds % 60);
+      return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    }
+    
+    // Đổi bài hát
+    function changeTrack(videoId) {
+      player.loadVideoById(videoId);
+      updateSongInfo();
+    }
+  </script>
+</body>
+</html>

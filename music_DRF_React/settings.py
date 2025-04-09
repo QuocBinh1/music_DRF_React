@@ -14,25 +14,25 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,  # Kết nối tối đa 10 phút
-    )
-}
-
-
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'music', # ten db
-#         'USER': 'postgres',
-#         'PASSWORD': 'Anhbinhpzo11',
-#         'HOST': 'localhost',   # Thay đổi nếu cần thiết
-#         'PORT': '5432',        # Thay đổi nếu cần thiết
-#     }
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'),
+#         conn_max_age=600,  # Kết nối tối đa 10 phút
+#     )
 # }
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'music', # ten db
+        'USER': 'postgres',
+        'PASSWORD': 'Anhbinhpzo11',
+        'HOST': 'localhost',   # Thay đổi nếu cần thiết
+        'PORT': '5432',        # Thay đổi nếu cần thiết
+    }
+}
 
 
 

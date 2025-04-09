@@ -1,8 +1,8 @@
 .header {
-  height: 34vw;
+  height: 1px;
   margin: 30px auto;
-  background: url('/banner2.png') no-repeat;
-  background-size: contain;
+  /* background: url('/banner2.png') no-repeat;
+  background-size: contain; */
   position: relative;
 }
 

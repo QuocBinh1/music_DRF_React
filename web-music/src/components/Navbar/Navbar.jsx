@@ -7,7 +7,7 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <a href="http://localhost:5173/"> <img src={assets.spotify_logo} alt="" className="spotify_logo"  /></a>
+      <a href="https://nhacnhac-drab.vercel.app/"> <img src={assets.spotify_logo} alt="" className="spotify_logo"  /></a>
      
       <ul className='navbar-menu'>
         <li onClick={() => setMenu("discover")} className={menu === "discover" ? "active" : ""}>Khám phá</li>
@@ -19,10 +19,7 @@ const Navbar = () => {
         <li onClick={() => setMenu("top100")} className={menu === "top100" ? "active" : ""}>Top 100</li>
       </ul>
       <div className="navbar-right">
-        <div className='search-box'>
-          <img src={assets.search_icon} alt="" />
-          <input className='search-input' type="text" placeholder="Tìm kiếm" />
-        </div>
+        
         <button className='sign-up'>Đăng nhập</button>
         <button className='sign-in'>Đăng ký</button>
       </div>

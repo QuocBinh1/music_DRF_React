@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './SongDetail.css'
 import { data, useParams } from 'react-router-dom'
-import { assets, songsData } from '../../assets/assets';
 import StreamAudioPlayer from '../../components/StreamAudioPlayer'; // đường dẫn tùy theo cấu trúc của bạn
 
+import { assets, songsData } from '../../assets/assets';
 const SongDetail = () => {
   const { video_id } = useParams();
 
@@ -20,16 +20,6 @@ const SongDetail = () => {
     { name: "Có đôi điều", singer: "Shiki" },
     { name: "Hello Việt Nam", singer: "Bống" }, 
   ];
-  // useEffect(()=>{
-  //  //fetch(`https://music-backend-k82o.onrender.com/api/songs/${video_id}/`)
-  //   fetch(`http://127.0.0.1:8000/api/songs/${video_id}/`)
-  //   .then((res)=>res.json())
-  //   .then((data)=>{
-  //     console.log("Dữ liệu bài hát:", data);
-  //       setSongsData(data);
-  //   }).catch((err)=> console.error("Loi khi lay du lieu bai hat",err));
-  // },[video_id]);
-
   return (
     <>
       <div className='song-detail'>

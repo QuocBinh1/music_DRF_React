@@ -88,7 +88,7 @@ const StreamAudioPlayer = ({ videoId }) => {
   };
 
   const updateInfo = () => {
-    const API_KEY = 'AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M'; // nhớ thay bằng API thật
+    const API_KEY = 'AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M'; 
     fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${API_KEY}&part=snippet`)
       .then(res => res.json())
       .then(data => {

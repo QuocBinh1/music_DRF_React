@@ -5,7 +5,7 @@ from rest_framework import  status
 from rest_framework.views import APIView
 
 from music_DRF_React import settings
-from .models import Song
+from .models import Song    
 from yt_dlp import YoutubeDL
 
 MEDIA_SONGS_PATH = "downloads"
@@ -45,10 +45,6 @@ class SearchYouTubeView(APIView):
             })
 
         return Response({"message": "Thành công!", "data": songs}, status=status.HTTP_200_OK)    
-
-
-
-
 class DownloadYouTubeToLocal(APIView):
     """Tải nhạc từ YouTube về thư mục downloads và lưu thông tin vào cơ sở dữ liệu."""
     
@@ -143,3 +139,31 @@ class GetSongByVideoID(APIView):
             }, status=status.HTTP_200_OK)
         except Song.DoesNotExist:
             return Response({"error": "Không tìm thấy bài hát với video_id này."}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class StreamYouTubeAudioView(APIView):
+    """Trả về link stream audio (không cần tải) từ YouTube theo video_id."""
+
+    def get(self, request, video_id):
+        youtube_url = f"https://www.youtube.com/watch?v={video_id}"
+        try:
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'quiet': True,
+                'skip_download': True,
+            }
+
+            with YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(youtube_url, download=False)
+                stream_url = info.get("url")
+
+            return Response({
+                "message": "Thành công!",
+                "video_id": video_id,
+                "stream_url": stream_url  # Link stream này có thể play trực tiếp
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                "error": f"Lỗi khi lấy stream từ YouTube: {str(e)}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
