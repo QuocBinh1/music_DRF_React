@@ -11,7 +11,7 @@ const SongDisplay = () => {
   const [searchQuery, setSearchQuery] = useState('mikelodick');
 
   const fetchSongs = (query) => {
-    fetch(`http://127.0.0.1:8000/api/search/?q=${query}`)
+    fetch(`https://music-backend-k82o.onrender.com/api/search/?q=${query}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
