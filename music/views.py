@@ -3,12 +3,15 @@ import requests , os
 from rest_framework.response import Response 
 from rest_framework import  status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from yt_dlp import YoutubeDL
+# from .serializers import FavoriteSerializer
+# from .models import Song, Favorite
 
 from music_DRF_React import settings
 from .models import Song    
-from yt_dlp import YoutubeDL
 
-MEDIA_SONGS_PATH = "downloads"
+
 
 YOUTUBE_API_KEY = "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M"
 
@@ -45,63 +48,6 @@ class SearchYouTubeView(APIView):
             })
 
         return Response({"message": "Thành công!", "data": songs}, status=status.HTTP_200_OK)    
-class DownloadYouTubeToLocal(APIView):
-    """Tải nhạc từ YouTube về thư mục downloads và lưu thông tin vào cơ sở dữ liệu."""
-    
-    def post(self, request):
-        songs = request.data.get("songs", [])  # Danh sách các bài hát cần tải
-        if not songs:
-            return Response({"error": "Danh sách bài hát không được cung cấp"}, status=status.HTTP_400_BAD_REQUEST)
-
-        download_path =settings.MEDIA_ROOT
-        os.makedirs(download_path, exist_ok=True)  # Tạo thư mục nếu chưa tồn tại
-
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': os.path.join(download_path, '%(id)s.%(ext)s'),  # Lưu file với video_id.mp3
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
-
-        downloaded_songs = []
-        with YoutubeDL(ydl_opts) as ydl:
-            for song in songs:
-                try:
-                    youtube_url = song.get("youtube_url")
-                    if not youtube_url:
-                        continue
-                    info = ydl.extract_info(youtube_url, download=True)
-                    video_id = info.get("id")
-                    file_path = os.path.join(download_path, f"{video_id}.mp3")
-
-                    # Lưu thông tin bài hát vào cơ sở dữ liệu
-                    song_obj, created = Song.objects.get_or_create(
-                        video_id=video_id,
-                        defaults={
-                            "title": info.get("title"),
-                            "artist": info.get("uploader", "Unknown"),
-                            "thumbnail": info.get("thumbnail"),
-                            "youtube_url": youtube_url,
-                            "file_path": file_path,
-                        }
-                    )
-
-                    downloaded_songs.append({
-                        "title": song_obj.title,
-                        "artist": song_obj.artist,
-                        "thumbnail": song_obj.thumbnail,
-                        "video_id": song_obj.video_id,
-                        "youtube_url": song_obj.youtube_url,
-                        "file_path": song_obj.file_path,
-                    })
-                except Exception as e:
-                    print(f"❌ Lỗi khi tải bài hát: {e}")
-
-        return Response({"message": "Tải nhạc thành công!", "data": downloaded_songs}, status=status.HTTP_200_OK)
-
 
 class GetAllSongs(APIView):
     """Trả về danh sách các bài hát từ cơ sở dữ liệu."""
@@ -139,8 +85,6 @@ class GetSongByVideoID(APIView):
             }, status=status.HTTP_200_OK)
         except Song.DoesNotExist:
             return Response({"error": "Không tìm thấy bài hát với video_id này."}, status=status.HTTP_404_NOT_FOUND)
-        
-
 class StreamYouTubeAudioView(APIView):
     """Trả về link stream audio (không cần tải) từ YouTube theo video_id."""
 
@@ -167,3 +111,78 @@ class StreamYouTubeAudioView(APIView):
             return Response({
                 "error": f"Lỗi khi lấy stream từ YouTube: {str(e)}"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class DownloadYouTubeToLocal(APIView):
+#     """Tải nhạc từ YouTube về thư mục downloads và lưu thông tin vào cơ sở dữ liệu."""
+    
+#     def post(self, request):
+#         songs = request.data.get("songs", [])  # Danh sách các bài hát cần tải
+#         if not songs:
+#             return Response({"error": "Danh sách bài hát không được cung cấp"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         download_path =settings.MEDIA_ROOT
+#         os.makedirs(download_path, exist_ok=True)  # Tạo thư mục nếu chưa tồn tại
+
+#         ydl_opts = {
+#             'format': 'bestaudio/best',
+#             'outtmpl': os.path.join(download_path, '%(id)s.%(ext)s'),  # Lưu file với video_id.mp3
+#             'postprocessors': [{
+#                 'key': 'FFmpegExtractAudio',
+#                 'preferredcodec': 'mp3',
+#                 'preferredquality': '192',
+#             }],
+#         }
+
+#         downloaded_songs = []
+#         with YoutubeDL(ydl_opts) as ydl:
+#             for song in songs:
+#                 try:
+#                     youtube_url = song.get("youtube_url")
+#                     if not youtube_url:
+#                         continue
+#                     info = ydl.extract_info(youtube_url, download=True)
+#                     video_id = info.get("id")
+#                     file_path = os.path.join(download_path, f"{video_id}.mp3")
+
+#                     # Lưu thông tin bài hát vào cơ sở dữ liệu
+#                     song_obj, created = Song.objects.get_or_create(
+#                         video_id=video_id,
+#                         defaults={
+#                             "title": info.get("title"),
+#                             "artist": info.get("uploader", "Unknown"),
+#                             "thumbnail": info.get("thumbnail"),
+#                             "youtube_url": youtube_url,
+#                             "file_path": file_path,
+#                         }
+#                     )
+
+#                     downloaded_songs.append({
+#                         "title": song_obj.title,
+#                         "artist": song_obj.artist,
+#                         "thumbnail": song_obj.thumbnail,
+#                         "video_id": song_obj.video_id,
+#                         "youtube_url": song_obj.youtube_url,
+#                         "file_path": song_obj.file_path,
+#                     })
+#                 except Exception as e:
+#                     print(f"❌ Lỗi khi tải bài hát: {e}")
+
+#         return Response({"message": "Tải nhạc thành công!", "data": downloaded_songs}, status=status.HTTP_200_OK)
+

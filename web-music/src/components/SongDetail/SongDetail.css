@@ -160,42 +160,119 @@ hr {
   margin-bottom: 15px;
 }
 
+.rank-list {
+  flex: 1;
+  border-radius: 10px;
+  width: 50vw;
+  margin-left: 75%;
+  margin-top: -190px;
+  height: 190px;
+}
+
+.song-name-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
 .song-rank-number {
   font-size: 20px;
   font-weight: bold;
-  width: 20px;
+  color: #e91e63;
+  width: 30px;
 }
 
-.song-rank-number:nth-child(1) {
-  color: red;
-}
-
-.song-rank-number:nth-child(2) {
-  color: green;
-}
-
-.song-rank-number:nth-child(3) {
-  color: orange;
-}
-
-.song-rank-info p {
-  margin: 0;
+.song-rank-info {
+  flex: 1;
 }
 
 .song-rank-info .song-title {
-  font-size: 16px;
   font-weight: bold;
+  margin: 0;
 }
 
 .song-rank-info .song-singer {
-  font-size: 14px;
+  margin: 0;
   color: gray;
+  font-size: 14px;
 }
-.rank-list{
-  width: 50vw;
-  margin-left: 75%;
-  margin-top: -180px;
-  height: 190px;
-  
+
+.comment-section {
+  margin-top: 20px;
+}
+
+.comments-list {
+  margin-bottom: 20px;
+  margin-top: -130px;
+}
+
+.comment-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.comment-item p {
+  margin: 5px 0;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: gray;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+button {
+  margin-left: 10px;
+  background-color: tomato;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.comment-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.add-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-comment textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.add-comment button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-comment button:hover {
+  background-color: darkred;
+}
+
+button:hover {
+  background-color: darkred;
 }

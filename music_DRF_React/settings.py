@@ -9,42 +9,32 @@ import dj_database_url
 
 
 
-# DEBUG = True
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.getenv('DATABASE_URL'),
-#         conn_max_age=600,  # Kết nối tối đa 10 phút
-#     )
-# }
 
 
-
+# ⚙️ Tự động dùng DATABASE_URL nếu có (trên Render)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'music', # ten db
-        'USER': 'postgres',
-        'PASSWORD': 'Anhbinhpzo11',
-        'HOST': 'localhost',   # Thay đổi nếu cần thiết
-        'PORT': '5432',        # Thay đổi nếu cần thiết
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),  # Render sẽ cấp sẵn biến này
+        conn_max_age=600,
+    )
 }
 
+# 🔁 Khi chạy local (chưa có DATABASE_URL), dùng cấu hình PostgreSQL local
+if not os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'music',
+            'USER': 'postgres',
+            'PASSWORD': 'Anhbinhpzo11',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
-
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-
-
-
-
-SECRET_KEY = 'django-insecure-$=1!_p6ymufin2g6+$dnfa(qa_=&ei%zpgv&^!k7p44%f3xz3o'
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key-for-local-dev')
 
 
 ALLOWED_HOSTS = [
@@ -55,8 +45,6 @@ ALLOWED_HOSTS = [
 ]
 
 
-# Application definition
-ROOT_URLCONF = 'music_DRF_React.urls'
 
 
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8wOMEei3M")
@@ -64,11 +52,12 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "AIzaSyD_uhl8JT_N3qKC8Xi1VfPBYl8w
 
 
 CORS_ALLOWED_ORIGINS = [
-    
     "https://nhacnhac-drab.vercel.app",
     "http://localhost:5173",  # Địa chỉ frontend React
 ]
 
+# nơi Django biết file cấu hình URL chính
+ROOT_URLCONF = 'music_DRF_React.urls'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -92,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 LOGGING = {
     'version': 1,
@@ -127,7 +117,6 @@ WSGI_APPLICATION = 'music_DRF_React.wsgi.application'
 MEDIA_URL = '/media/'
 
 # ✅ Dùng thư mục tạm thời phù hợp với Render
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'downloads')
 MEDIA_ROOT = '/tmp'
 
 

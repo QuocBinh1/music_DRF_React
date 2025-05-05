@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 
 
 router = DefaultRouter()
+# router.register(r'songs', SongViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

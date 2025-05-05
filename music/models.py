@@ -8,7 +8,7 @@ class Song(models.Model):
     youtube_url = models.URLField()
     thumbnail = models.URLField()
     video_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
-    file_path = models.CharField(max_length=500, default='')  # Thêm default=''
+    file_path = models.CharField(max_length=500, default='') 
 
 
     def __str__(self):

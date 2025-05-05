@@ -1,0 +1,120 @@
+.playlist-container {
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .playlist-left {
+    flex: 2;
+  }
+  .playlist-right {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  .playlist-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+  }
+  
+  .playlist-song-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .playlist-song-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 20px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .playlist-song-item:hover {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+  }
+  
+  .playlist-song-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .playlist-song-info {
+    flex: 1;
+  }
+  
+  .playlist-song-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+  }
+  
+  .playlist-song-artist {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .playlist-play-button {
+    padding: 10px 16px;
+    background-color: #e91e63;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  
+  .playlist-play-button:hover {
+    background-color: #e14b4f;
+  }
+  
+  .no-favorites-song {
+    text-align: center;
+    font-size: 16px;
+    color: #888;
+    margin-top: 20px;
+  }
+  .song-name-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .song-rank-number {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e91e63;
+    width: 30px;
+  }
+  
+  .song-rank-info {
+    flex: 1;
+  }
+  
+  .song-rank-info .song-title {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .song-rank-info .song-singer {
+    margin: 0;
+    color: gray;
+    font-size: 14px;
+  }
