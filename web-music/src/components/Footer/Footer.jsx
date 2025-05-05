@@ -8,7 +8,6 @@ const Footer = () => {
         <div className="footer-content-left">
           <img src={assets.spotify_logo} alt="" />
           <p>NhacCuaTui</p>
-          <p>Chỉ dùng { } để nhúng biểu thức JavaScript (toán tử, hàm, biến, v.v.), không thể dùng câu lệnh (if, for, while, v.v.).</p>
           <div className="footer-social-icons">
             <img src={assets.facebook_icon} alt="" />
             <img src={assets.twitter_icon} alt="" />
